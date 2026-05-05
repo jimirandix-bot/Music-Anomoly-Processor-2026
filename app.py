@@ -1,30 +1,40 @@
 import streamlit as st
 import pandas as pd
 
-# UI Architecture
+# UI CONFIGURATION
 st.set_page_config(page_title="Anomaly Gap Finder v2", layout="wide")
-st.title("🎵 Anomaly Gap Finder: Sovereign Operator v2")
+st.title("🎵 Anomaly Gap Finder: Sovereign Hub")
 
-# Logic: S = R/P (Results = Retention / Perception)
-# P-Reduction Filter: Removes high-density market nodes.
+# SIDEBAR: STRATEGIC DIRECTIVE
+st.sidebar.header("Operator Status")
+st.sidebar.success("V2 Density Filter: ACTIVE")
+st.sidebar.info("Target: 'Work From Home' Niche")
 
+# DATA INJECTION
 try:
-    # Payload Injection
     df = pd.read_csv('2026-05-04T15-20_export.csv')
     
-    # Apply V2 Density Filter (Max 100k Views to beat)
-    v2_vacuums = df[
-        (df['Gap Score'] > 65) & 
-        (df['Top Video Views (K)'] < 100)
-    ].sort_values(by='Staleness (yrs)', ascending=False)
+    # UI TABS RESTORATION
+    tab1, tab2, tab3 = st.tabs(["🚀 Market Vacuums", "📊 Data Audit", "🛠 System Strategy"])
 
-    st.subheader("🚀 High-Value Vacuums: Low Competition Nodes")
-    st.dataframe(v2_vacuums)
-    
-    # Strategy Directive
-    st.sidebar.header("Current Directive")
-    st.sidebar.success("Target: Background music for working from home")
-    st.sidebar.info("Metric: P < 100k Views. Status: OPTIMAL.")
+    with tab1:
+        st.subheader("High-Value / Low-Density Nodes")
+        # Apply V2 Density Filter (Max 100k Views)
+        v2_vacuums = df[
+            (df['Gap Score'] > 65) & 
+            (df['Top Video Views (K)'] < 100)
+        ].sort_values(by='Staleness (yrs)', ascending=False)
+        st.dataframe(v2_vacuums, use_container_width=True)
+
+    with tab2:
+        st.subheader("Raw Market Export")
+        st.dataframe(df, use_container_width=True)
+
+    with tab3:
+        st.subheader("Execution Logic: S = R/P")
+        st.write("1. **R (Retention):** 120-Minute Sonauto Build.")
+        st.write("2. **P (Perception/Competition):** Targeting nodes < 100k views.")
+        st.write("3. **Status:** Move to Sonauto for 'Work From Home' asset.")
 
 except Exception as e:
-    st.error(f"Waiting for CSV integrity check: {e}")
+    st.error(f"Integrity Sync Failed: {e}")
